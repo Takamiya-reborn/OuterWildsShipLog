@@ -1,0 +1,8 @@
+services:
+  shiplog:
+    build: .
+    image: outerwilds-shiplog
+    container_name: OuterWilds
+    restart: always
+    ports:
+      - "80:80"

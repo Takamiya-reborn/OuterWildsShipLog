@@ -73,24 +73,22 @@ function loadImage(src) {
     })
 }
 
-// 预加载所有节点图片
-async function preloadNodeImages() {
-    try {
-        // 批量加载所有图片
-        const imagePromises = nodes.map(node => loadImage(node.img))
-        const images = await Promise.all(imagePromises)
+// 异步加载单张节点图片，加载完成后替换占位色块并重绘
+// （节点先以色块占位立即绘制，不再阻塞首屏）
+function loadNodeImage(node, contentImage) {
+    loadImage(node.img)
+        .then(img => {
+            // 图片加载完成后重新计算缩放（保持比例，避免拉伸）
+            const containerW = node.width * 0.95
+            const containerH = node.height * 0.95
+            const scale = Math.min(containerW / img.width, containerH / img.height)
 
-        // 将加载好的图片绑定到对应节点
-        nodes.forEach((node, index) => {
-            node.image = images[index]
+            contentImage.image(img)
+            contentImage.width(img.width * scale)
+            contentImage.height(img.height * scale)
+            layer.batchDraw()
         })
-
-        // 图片加载完成后绘制节点和边
-        drawNodes()
-        drawEdges()
-    } catch (err) {
-        console.error('图片预加载失败：', err)
-    }
+        .catch(err => console.error(err.message))
 }
 
 // 颜色变浅工具函数
@@ -159,25 +157,15 @@ function drawNodes() {
             strokeWidth: 1,
         })
 
-        // ---------------------- 3. 内容图片（适配） ----------------------
-        const img = node.image // 预加载好的图片对象
-        const containerW = node.width * 0.95 // 内容区宽度
-        const containerH = node.height * 0.95 // 内容区高度
-
-        // 计算图片缩放比例（保持比例，避免拉伸）
-        const scale = Math.min(containerW / img.width, containerH / img.height)
-        const drawW = img.width * scale // 图片绘制宽度
-        const drawH = img.height * scale // 图片绘制高度
+        // ---------------------- 3. 内容图片（占位，异步加载） ----------------------
         const offsetX = 0.05 * node.width / 2 // 水平居中偏移
         const offsetY = 0.05 * node.height / 2 // 垂直居中偏移
 
         const contentImage = new Konva.Image({
             x: offsetX,          // 图片水平居中
             y: titleHeight + offsetY, // 图片垂直居中（在标题栏下方）
-            width: drawW,
-            height: drawH,
-            image: img,
         })
+        loadNodeImage(node, contentImage)
 
         // ---------------------- 4. 交互效果 ----------------------
 
@@ -281,10 +269,11 @@ async function addLogo() {
     }
 }
 
-// 统一绘制
+// 统一绘制（节点先以占位色块立即显示，图片异步填充）
 drawGrid()
 addLogo()
-preloadNodeImages()
+drawNodes()
+drawEdges()
 layer.add(contentGroup)
 
 
