@@ -1,7 +1,42 @@
+@font-face {
+    font-family: 'Space Mono';
+    src: url('./assets/fonts/SpaceMono-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Space Mono';
+    src: url('./assets/fonts/SpaceMono-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ITC Serif Gothic Std';
+    src: url('./assets/fonts/SerifGothicStd-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Flow Block';
+    src: url('./assets/fonts/Flow-Block.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 body {
     margin: 0;
     background: #0a192f;
     overflow: hidden;
+    /* 中文回退用 Noto Sans SC：加粗档比雅黑细，小字号更清晰 */
+    font-family: 'Space Mono', 'Noto Sans SC', 'Microsoft YaHei UI', sans-serif;
+    font-weight: 500;
 }
 
 #container {
@@ -9,28 +44,46 @@ body {
     height: 100%;
 }
 
-/* 详情弹窗样式 */
+/* 详情弹窗样式（参考 outerwilds.ventures 的日志面板设计） */
 .detail-popup {
     position: absolute;
-    background: #1e2a3a;
-    color: #fff;
-    padding: 16px;
-    border: #bfbfbf 5px solid;
+    bottom: 16px;               /* 对应原站 bottom-4：贴底留 16px */
+    left: 16px;                 /* 对应原站 mx-4：左右留 16px */
+    right: 16px;
+    box-sizing: border-box;     /* box-border：边框算入尺寸 */
+    background: #06101a;        /* bg-log-bg：深空日志底色 */
+    color: #cfcfd1;             /* text-log-text */
+    border: 2px solid #5878b6;  /* border-2 border-lightblue：浅蓝描边 */
     display: none;
     z-index: 1000;
-    width: 90vw;
-    height: 30vh;
-    font-size: 14px;
-    left: 50%;
-    transform: translateX(-50%);
-    overflow-y: scroll;
-    scrollbar-width: none;
+    font-size: 16px;
+    overflow-y: auto;
+    max-height: 300px;          /* 原站日志面板的最大滚动高度 */
+    scrollbar-width: none;      /* 原站 scrollbar-off：隐藏滚动条 */
 }
 
-.detail-popup div {
-    color: #bfbfbf;
-    font-size: 32px;
-    font-weight: bold;
-    white-space: pre-line;
+/* 记录列表：对应原站的 ul.list-disc.ml-6，每条记录前带短横线 */
+.detail-popup ul {
+    list-style: none;
+    margin: 8px 16px;
+    padding: 0;
+}
+
+.detail-popup li {
+    position: relative;
+    padding-left: 1.25em;
+    margin: 4px 0;              /* 对应原站 li.my-1 */
+    font-family: 'Space Mono', 'Noto Sans SC', 'Microsoft YaHei UI', sans-serif;
+    line-height: 1.6;
     overflow-wrap: break-word;
+}
+
+.detail-popup li::before {
+    content: '';                /* 原站每条记录前的短横线：从弹窗左边框延伸到文字，与边框相连 */
+    position: absolute;
+    left: -16px;                /* 抵消 ul 的 16px 左边距，让线段起点贴住弹窗左边框 */
+    top: 0.72em;                /* 对齐第一行文字的视觉中心 */
+    width: calc(16px + 0.3em);  /* 跨过边距接到边框，右侧稍短，避免整条线过长 */
+    height: 2px;
+    background: #5878b6;        /* border-lightblue，与弹窗描边融为一体 */
 }

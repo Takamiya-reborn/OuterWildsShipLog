@@ -1,21 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OuterWildsShipLog</title>
+    <link rel="icon" type="image/ico" href="./src/assets/img/favicon.ico" />
+    <!-- Noto Sans SC（思源黑体）中文回退字体：按 unicode-range 分 101 包，只下载用到的字符块 -->
+    <link
+      rel="stylesheet"
+      href="https://registry.npmmirror.com/@fontsource/noto-sans-sc/latest/files/500.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://registry.npmmirror.com/@fontsource/noto-sans-sc/latest/files/700.css"
+    />
+    <link rel="stylesheet" type="text/css" href="./src/style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OuterWildsShipLog</title>
-  <link rel="icon" type="image/ico" href="./src/assets/img/favicon.ico">
-  <link rel="stylesheet" type="text/css" href="./src/style.css">
-</head>
-
-<body>
-  <div id="container"></div>
-  <!-- 详情 -->
-  <div class="detail-popup" id="detailPopup">
-    <div id="popupContent"></div>
-  </div>
-  <script type="module" src="./src/main.js"></script>
-</body>
-
+  <body>
+    <div id="container"></div>
+    <!-- 详情 -->
+    <div class="detail-popup" id="detailPopup">
+      <ul id="popupList"></ul>
+    </div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
 </html>
