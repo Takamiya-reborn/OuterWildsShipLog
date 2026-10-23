@@ -110,8 +110,10 @@ body {
     justify-content: center;
     padding: 16px;
     background: rgba(6, 16, 26, 0.55);          /* bg-log-bg 半透明，压暗背后图谱 */
-    backdrop-filter: blur(8px);
+    /* 顺序不能换：构建时 lightningcss 会把重复声明合并保留最后一条，
+       只有 -webkit- 前缀版时 Chrome/Edge 会丢失背景模糊 */
     -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     z-index: 2000;                              /* 高于详情弹窗（1000） */
     transition: opacity 0.4s ease;
 }
