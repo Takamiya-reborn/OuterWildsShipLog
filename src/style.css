@@ -47,19 +47,27 @@ body {
 /* 详情弹窗样式（参考 outerwilds.ventures 的日志面板设计） */
 .detail-popup {
     position: absolute;
-    bottom: 16px;               /* 对应原站 bottom-4：贴底留 16px */
-    left: 16px;                 /* 对应原站 mx-4：左右留 16px */
+    bottom: 16px;
+    /* 对应原站 bottom-4：贴底留 16px */
+    left: 16px;
+    /* 对应原站 mx-4：左右留 16px */
     right: 16px;
-    box-sizing: border-box;     /* box-border：边框算入尺寸 */
-    background: #06101a;        /* bg-log-bg：深空日志底色 */
-    color: #cfcfd1;             /* text-log-text */
-    border: 2px solid #5878b6;  /* border-2 border-lightblue：浅蓝描边 */
+    box-sizing: border-box;
+    /* box-border：边框算入尺寸 */
+    background: #06101a;
+    /* bg-log-bg：深空日志底色 */
+    color: #cfcfd1;
+    /* text-log-text */
+    border: 2px solid #5878b6;
+    /* border-2 border-lightblue：浅蓝描边 */
     display: none;
     z-index: 1000;
     font-size: 16px;
     overflow-y: auto;
-    max-height: 300px;          /* 原站日志面板的最大滚动高度 */
-    scrollbar-width: none;      /* 原站 scrollbar-off：隐藏滚动条 */
+    max-height: 300px;
+    /* 原站日志面板的最大滚动高度 */
+    scrollbar-width: none;
+    /* 原站 scrollbar-off：隐藏滚动条 */
 }
 
 /* 记录列表：对应原站的 ul.list-disc.ml-6，每条记录前带短横线 */
@@ -72,18 +80,97 @@ body {
 .detail-popup li {
     position: relative;
     padding-left: 1.25em;
-    margin: 4px 0;              /* 对应原站 li.my-1 */
+    margin: 4px 0;
+    /* 对应原站 li.my-1 */
     font-family: 'Space Mono', 'Noto Sans SC', 'Microsoft YaHei UI', sans-serif;
     line-height: 1.6;
     overflow-wrap: break-word;
 }
 
 .detail-popup li::before {
-    content: '';                /* 原站每条记录前的短横线：从弹窗左边框延伸到文字，与边框相连 */
+    content: '';
+    /* 原站每条记录前的短横线：从弹窗左边框延伸到文字，与边框相连 */
     position: absolute;
-    left: -16px;                /* 抵消 ul 的 16px 左边距，让线段起点贴住弹窗左边框 */
-    top: 0.72em;                /* 对齐第一行文字的视觉中心 */
-    width: calc(16px + 0.3em);  /* 跨过边距接到边框，右侧稍短，避免整条线过长 */
+    left: -16px;
+    /* 抵消 ul 的 16px 左边距，让线段起点贴住弹窗左边框 */
+    top: 0.72em;
+    /* 对齐第一行文字的视觉中心 */
+    width: calc(16px + 0.3em);
+    /* 跨过边距接到边框，右侧稍短，避免整条线过长 */
     height: 2px;
-    background: #5878b6;        /* border-lightblue，与弹窗描边融为一体 */
+    background: #5878b6;
+    /* border-lightblue，与弹窗描边融为一体 */
+}
+/* 剧透拦截弹窗：全屏遮罩 + 背景模糊，确认后才展示图谱 */
+.spoiler-gate {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(6, 16, 26, 0.55);          /* bg-log-bg 半透明，压暗背后图谱 */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 2000;                              /* 高于详情弹窗（1000） */
+    transition: opacity 0.4s ease;
+}
+
+/* 确认后淡出并彻底移除交互 */
+.spoiler-gate.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.spoiler-panel {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 640px;
+    padding: 28px 32px;
+    background: #06101a;                        /* bg-log-bg：与详情弹窗同底色 */
+    border: 2px solid #5878b6;                  /* border-lightblue：与详情弹窗同描边 */
+    color: #cfcfd1;                             /* text-log-text */
+    text-align: center;
+}
+
+.spoiler-text {
+    margin: 0 0 24px;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.spoiler-confirm {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    background: #2e9e5b;                        /* 游戏风格的启动键绿 */
+    color: #fff;
+    border: none;
+    font-family: 'Space Mono', 'Noto Sans SC', 'Microsoft YaHei UI', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.spoiler-confirm:hover {
+    background: #3cb56d;
+}
+
+.spoiler-fairuse {
+    margin-top: 24px;
+    font-size: 12px;
+    color: rgba(207, 207, 209, 0.6);
+}
+
+.spoiler-fairuse strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #cfcfd1;
+}
+
+.spoiler-fairuse p {
+    margin: 0;
+    line-height: 1.6;
 }

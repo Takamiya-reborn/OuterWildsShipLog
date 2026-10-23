@@ -50,3 +50,9 @@ window.addEventListener('resize', () => {
     drawStars(); // 种子固定，星星位置不跳变
     layer.batchDraw();
 });
+
+// 剧透拦截弹窗：图谱在遮罩下照常初始化（模糊可见），确认后淡出展示
+const spoilerGate = document.getElementById('spoilerGate');
+document.getElementById('spoilerConfirm').addEventListener('click', () => {
+    spoilerGate.classList.add('hidden');
+});
